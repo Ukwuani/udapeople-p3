@@ -291,19 +291,13 @@ jobs:
             apk update
             apk add --update ansible aws-cli openssh-client tar gzip
       - run:
-          name: Build backend
-          command: |
-            cd backend
-            npm install
-            npm run build
-            cd ..
-      - run:
           name: Deploy backend
           command: |
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy-environment  
 
