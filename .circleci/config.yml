@@ -274,7 +274,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.9.1-alpine3.12
     steps:
       - checkout
       - install_awscli
@@ -283,17 +283,13 @@ jobs:
           fingerprints: ["62:7e:5a:b4:8e:fc:7d:fd:82:62:a9:48:f9:0b:fd:47"]
       - restore_cache:
           keys: [backend-build]
-      # Add ssh keys with fingerprint
-      # attach workspace
       - attach_workspace:
           at: ~/
       - run:
           name: Install dependencies
           command: |
-            cd backend
-            npm install
-            npm run build
-            cd ..
+            apk update
+            apk add --update ansible aws-cli openssh-client tar
       - run:
           name: Deploy backend
           command: |
@@ -302,7 +298,6 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
-#       # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
 #     docker:
