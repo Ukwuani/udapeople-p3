@@ -199,7 +199,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["aa:6b:87:5a:4c:4e:7e:cf:4c:af:89:ca:2d:63:95:92"]
+          fingerprints: ["62:7e:5a:b4:8e:fc:7d:fd:82:62:a9:48:f9:0b:fd:47"]
       - attach_workspace:
           at: ~/
       - install_awscli
@@ -280,7 +280,7 @@ jobs:
       - install_awscli
       - install_ansible
       - add_ssh_keys:
-          fingerprints: ["aa:6b:87:5a:4c:4e:7e:cf:4c:af:89:ca:2d:63:95:92"]
+          fingerprints: ["62:7e:5a:b4:8e:fc:7d:fd:82:62:a9:48:f9:0b:fd:47"]
       - restore_cache:
           keys: [backend-build]
       # Add ssh keys with fingerprint
