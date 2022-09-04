@@ -277,8 +277,8 @@ jobs:
       - image: python:3.9.1-alpine3.12
     steps:
       - checkout
-      - install_awscli
-      - install_ansible
+      # - install_awscli
+      # - install_ansible
       - add_ssh_keys:
           fingerprints: ["62:7e:5a:b4:8e:fc:7d:fd:82:62:a9:48:f9:0b:fd:47"]
       - restore_cache:
