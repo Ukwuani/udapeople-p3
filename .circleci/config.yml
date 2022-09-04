@@ -289,7 +289,7 @@ jobs:
           name: Install dependencies
           command: |
             apk update
-            apk add --update ansible aws-cli openssh-client tar gzip npm nodejs=13.8.0
+            apk add --update ansible aws-cli openssh-client tar gzip npm
       - run:
           name: Deploy backend
           command: |
