@@ -45,20 +45,20 @@ commands:
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
-      # Add parameter here     
+      workflow_id:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}   
     steps:
       - run:
           name: Revert migrations
-          # Add when this will run
+          when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
+            SUCCESS = $(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.workflow_id>>)
             if(( $SUCCESS==1 )); 
             then
-            #  cd ~/project/backend
-            #  npm install
-            #  Add revert code here. You can find this in the Getting Started section.
-              exit 1
+              cd ~/backend
+              npm install
+              npm run migration:revert
             fi
             
 jobs:
@@ -277,7 +277,7 @@ jobs:
       - image: python:3.9.1-alpine3.12
     steps:
       - checkout
-      # - install_awscli
+      # - install_nodejs
       # - install_ansible
       - add_ssh_keys:
           fingerprints: ["62:7e:5a:b4:8e:fc:7d:fd:82:62:a9:48:f9:0b:fd:47"]
@@ -289,10 +289,14 @@ jobs:
           name: Install dependencies
           command: |
             apk update
-            apk add --update ansible aws-cli openssh-client tar gzip
+            apk add --update ansible aws-cli openssh-client tar gzip npm nodejs=13.8.0
       - run:
           name: Deploy backend
           command: |
+            cd backend
+            npm install
+            npm run build
+            cd ../
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
