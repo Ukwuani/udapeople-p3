@@ -210,7 +210,7 @@ jobs:
             cd .circleci/ansible
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment  
+      # - destroy-environment  
 
   run-migrations:
     docker:
@@ -235,7 +235,7 @@ jobs:
             then
                 curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
-      - destroy-environment
+      # - destroy-environment
     #  Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
