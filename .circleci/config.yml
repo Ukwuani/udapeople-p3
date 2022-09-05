@@ -53,10 +53,11 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.workflow_id>>)
+            SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.workflow_id>>)
+            echo $SUCCESS
             # if(( $SUCCESS==1 )); 
             # then
-            cd ~/
+            cd ~/project
             ls
             npm install
             npm run migration:revert
@@ -314,7 +315,7 @@ jobs:
           name: Install dependencies
           command: |
             apk update
-            apk add --update curl aws-cli
+            apk add --update curl aws-cli npm
       - run:
           name: Get backend url
           command: |
